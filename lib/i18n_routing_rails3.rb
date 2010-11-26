@@ -290,6 +290,11 @@ module I18nRouting
     def initialize(locale, set, scope, path, options)
       super(set, scope, path.clone, options ? options.clone : nil)
 
+      # Not sure why this happens and we don't have time to investigate right now. /P. 2010-11-26
+      if @options and @options.has_key?(:defaults) and @options[:defaults].frozen?
+        @options[:defaults] = @options[:defaults].dup
+      end
+
       # try to get translated path :
       I18n.locale = locale
       ts = @path.gsub(/^\//, '')
